@@ -2,18 +2,24 @@
 #include "bsp_motor.h"
 #include "bsp_SysTick.h"
 #include "bsp_speedtest.h"
-#include "bsp_usart.h"
+#include "stdio.h"
+#include "bsp_oled.h"
 
-extern volatile uint16_t CNT = 0;
-
+volatile uint16_t CNT = 0;
+char char_buffer[20];
 int main()
 {
-    USART_Config();
-    //motor1_init(0,7199);
+
+    SysTick_Init();
+    GPIO_OLED_InitConfig();
+    sprintf(char_buffer,"CNT = \0");
+    OLED_Clear();
+    OLED_ShowString(0,0,char_buffer);
+
     speedtest_init(9999,7199);
     while(1)
     {
-        Delay_ms(5000);
+        //Delay_ms(5000);
         //TIM_SetCompare1(TIM3,3599);
     }
 }

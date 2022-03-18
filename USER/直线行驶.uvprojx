@@ -572,6 +572,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\bsp_usart.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\bsp_oled.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

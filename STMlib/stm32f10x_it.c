@@ -29,10 +29,12 @@
 #include "bsp_speedtest.h"
 #include <stdio.h>
 #include <string.h> 
-#include "bsp_usart.h"
+
+#include "bsp_oled.h"
 
 extern volatile uint16_t CNT;
-
+char    speed[5];
+//char char_buffer[5];
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -162,9 +164,23 @@ void SPEED_CLK_TIM_IRQHandler(void)
     if(TIM_GetITStatus(SPEED_CLK_TIM,TIM_IT_Update)!= RESET)      //检查TIM3更新中断发生与否
     {
         TIM_ClearITPendingBit(SPEED_CLK_TIM,TIM_IT_Update);  //清除TIMx更新中断标志 
-         
-        //CNT=TIM_GetCounter(TIM2);                   //读取1s内计数器计的CNT值
-        USART1_printf("\r\n CNT = %d \r\n",CNT);
+        
+        if(CNT < 10)
+        {
+          sprintf(speed,"%d  \0",CNT);
+          OLED_ShowString(50,0,speed);
+        }
+        else if(CNT < 100)
+        {
+          sprintf(speed,"%d \0",CNT);
+          OLED_ShowString(50,0,speed);
+        }
+        else 
+        {
+          sprintf(speed,"%d\0",CNT);
+          OLED_ShowString(50,0,speed);
+        }
+
         CNT = 0;
         TIM_SetCounter(TIM2,0);
     }

@@ -1,23 +1,19 @@
 /**
   ******************************************************************************
   * @file    bsp_SysTick.c
-  * @author  fire
+  * @author  sndgza
   * @version V1.0
-  * @date    2013-xx-xx
+  * @date    2022-03-18
   * @brief   SysTick 系统滴答时钟10us中断函数库,中断时间可自由配置，
   *          常用的有 1us 10us 1ms 中断。     
   ******************************************************************************
   * @attention
-  *
-  * 实验平台:野火 iSO STM32 开发板 
-  * 论坛    :http://www.firebbs.cn
-  * 淘宝    :https://fire-stm32.taobao.com
-  *
   ******************************************************************************
   */
-//SysTick_Config主要用来配置中端向量，重置STK_VAL寄存器，配置SysTick时钟为AHB 
+  
+	
 #include "bsp_SysTick.h"
- 
+
 
 static __IO u32 TimingDelay = 0;
  
