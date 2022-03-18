@@ -25,6 +25,14 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
+#include "bsp_SysTick.h"
+#include "bsp_speedtest.h"
+#include <stdio.h>
+#include <string.h> 
+#include "bsp_usart.h"
+
+extern volatile uint16_t CNT;
+
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -146,6 +154,44 @@ void SysTick_Handler(void)
 	// 	}
 	// }
 }
+
+
+
+void SPEED_CLK_TIM_IRQHandler(void)
+{
+    if(TIM_GetITStatus(SPEED_CLK_TIM,TIM_IT_Update)!= RESET)      //检查TIM3更新中断发生与否
+    {
+        TIM_ClearITPendingBit(SPEED_CLK_TIM,TIM_IT_Update);  //清除TIMx更新中断标志 
+         
+        //CNT=TIM_GetCounter(TIM2);                   //读取1s内计数器计的CNT值
+        USART1_printf("\r\n CNT = %d \r\n",CNT);
+        CNT = 0;
+        TIM_SetCounter(TIM2,0);
+    }
+}
+
+
+void TIM2_IRQHandler()
+{
+  // 当要被捕获的信号的周期大于定时器的最长定时时，定时器就会溢出，产生更新中断
+	// 这个时候我们需要把这个最长的定时周期加到捕获信号的时间里面去
+	if ( TIM_GetITStatus ( CAP_TIM, TIM_IT_Update) != RESET )               
+	{	
+		//TIM_ICUserValueStructure.Capture_Period ++;		
+		TIM_ClearITPendingBit ( CAP_TIM, TIM_FLAG_Update ); 		
+	}
+  // 上升沿捕获中断
+	if ( TIM_GetITStatus (CAP_TIM, CAP_TIM_IT_CCx ) != RESET)
+	{
+    CNT ++;
+    TIM_ClearITPendingBit (CAP_TIM, CAP_TIM_IT_CCx );
+  }
+
+}
+
+
+
+
 
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */

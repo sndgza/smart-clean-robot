@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "bsp_motor.h": "c"
+        "bsp_motor.h": "c",
+        "bsp_speedtest.h": "c",
+        "bsp_usart.h": "c"
     }
 }
