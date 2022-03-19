@@ -33,6 +33,7 @@
 #include "bsp_oled.h"
 
 extern volatile uint16_t CNT;
+extern s32 leftSpeedNow;
 char    speed[5];
 //char char_buffer[5];
 
@@ -180,7 +181,7 @@ void SPEED_CLK_TIM_IRQHandler(void)
           sprintf(speed,"%d\0",CNT);
           OLED_ShowString(50,0,speed);
         }
-
+        leftSpeedNow = CNT;
         CNT = 0;
         TIM_SetCounter(TIM2,0);
     }

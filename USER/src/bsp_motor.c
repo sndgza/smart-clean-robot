@@ -16,7 +16,8 @@
 
 
 
-
+s32 motorLeft;
+s32 motorRight; 
  /**
   * @brief  初始化控制电机的驱动
   * @param  arr: 自动重装载寄存器的值
@@ -27,19 +28,20 @@ void motor1_init(u16 arr,u16 psc)
 {  
 
 	GPIO_InitTypeDef GPIO_InitStructure;
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-    TIM_OCInitTypeDef  TIM_OCInitStructure;
+  TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+  TIM_OCInitTypeDef  TIM_OCInitStructure;
 
-    // 输出比较通道1 GPIO 初始化
-    RCC_APB2PeriphClockCmd(MOTOR1_PORT1_CLK , ENABLE);
-    GPIO_InitStructure.GPIO_Pin =  MOTOR1_PIN1;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(MOTOR1_PORT1, &GPIO_InitStructure);
+  motorLeft = MOTOR1_PULSE;
+  // 输出比较通道1 GPIO 初始化
+  RCC_APB2PeriphClockCmd(MOTOR1_PORT1_CLK , ENABLE);
+  GPIO_InitStructure.GPIO_Pin =  MOTOR1_PIN1;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(MOTOR1_PORT1, &GPIO_InitStructure);
 
 
-    RCC_APB1PeriphClockCmd(MOTOR1_TIM_CLK,ENABLE);
-   	// 自动重装载寄存器的值，累计TIM_Period+1个频率后产生一个更新或者中断
+  RCC_APB1PeriphClockCmd(MOTOR1_TIM_CLK,ENABLE);
+  // 自动重装载寄存器的值，累计TIM_Period+1个频率后产生一个更新或者中断
 	TIM_TimeBaseStructure.TIM_Period= arr;	
 	// 驱动CNT计数器的时钟 = Fck_int/(psc+1)
 	TIM_TimeBaseStructure.TIM_Prescaler= psc;	
@@ -63,7 +65,7 @@ void motor1_init(u16 arr,u16 psc)
 	// 输出通道空闲电平极性配置
 	//TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
 	// 输出占空比
-	TIM_OCInitStructure.TIM_Pulse = 3599;
+	TIM_OCInitStructure.TIM_Pulse = motorLeft;
 	TIM_OC1Init(MOTOR1_TIM, &TIM_OCInitStructure);
 	TIM_OC1PreloadConfig(MOTOR1_TIM, TIM_OCPreload_Enable);
     //TIM_ARRPreloadConfig(TIM3,ENABLE);

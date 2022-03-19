@@ -4,6 +4,8 @@
         "bsp_speedtest.h": "c",
         "bsp_usart.h": "c",
         "bsp_systick.h": "c",
-        "bsp_oled.h": "c"
+        "bsp_oled.h": "c",
+        "bsp_pid.h": "c",
+        "stm32f10x.h": "c"
     }
 }

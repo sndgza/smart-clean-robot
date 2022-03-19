@@ -568,14 +568,14 @@
               <FilePath>.\src\bsp_speedtest.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\bsp_usart.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_oled.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\bsp_oled.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\bsp_pid.c</FilePath>
             </File>
           </Files>
         </Group>

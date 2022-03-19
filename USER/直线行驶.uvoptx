@@ -646,8 +646,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\bsp_usart.c</PathWithFileName>
-      <FilenameWithoutPath>bsp_usart.c</FilenameWithoutPath>
+      <PathWithFileName>.\src\bsp_oled.c</PathWithFileName>
+      <FilenameWithoutPath>bsp_oled.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -658,8 +658,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\bsp_oled.c</PathWithFileName>
-      <FilenameWithoutPath>bsp_oled.c</FilenameWithoutPath>
+      <PathWithFileName>.\src\bsp_pid.c</PathWithFileName>
+      <FilenameWithoutPath>bsp_pid.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
