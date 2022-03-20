@@ -6,6 +6,7 @@
         "bsp_systick.h": "c",
         "bsp_oled.h": "c",
         "bsp_pid.h": "c",
-        "stm32f10x.h": "c"
+        "stm32f10x.h": "c",
+        "bsp_bluetooth.h": "c"
     }
 }

@@ -1,3 +1,14 @@
+/*
+*******************************************************************************
+* @file    bsp_pid.c
+* @author  sndgza
+* @version V1.0
+* @date    2022-03-19
+* @brief   pid控制算法
+******************************************************************************
+* @attention
+******************************************************************************
+*/ 
 #include "bsp_pid.h"
 
 pid_uint pid_Task_Letf;
@@ -58,12 +69,11 @@ void reset_Uk(pid_uint *p)
 
 s32 PID_common(int set,int jiance,pid_uint *p)
 {
-    int ek=0,U_k=0,ad_Uk=0;
+    int ek=0,U_k=0;
 
     ek=jiance - set;                                                               
 
     U_k=p->U_kk + p->Kp*(ek - p->ekk) + p->Ki*ek + p->Kd*(ek - 2*p->ekk + p->ekkk);
-    ad_Uk = U_k - p->U_kk;
     p->U_kk=U_k;
     p->ekkk=p->ekk;
     p->ekk=ek;

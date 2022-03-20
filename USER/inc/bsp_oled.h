@@ -12,7 +12,7 @@
 	* 1:并行8080模式
   */
 #define OLED_MODE 				0
-#define SIZE 							16
+#define SIZE 							8
 #define XLevelL						0x00
 #define XLevelH						0x10
 #define Max_Column				128
@@ -75,7 +75,7 @@ void Lipo_Voltage_Display(void);
 void DHT11_TemHum_Display(void);
 void USB_ON_Dispaly(void);
 void USB_OFF_Dispaly(void);
-
+void OLED_ClearRow(uint8_t y);
 #endif  /* __OLED_H */
 	 
 

@@ -577,6 +577,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\bsp_pid.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_Bluetooth.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\bsp_Bluetooth.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

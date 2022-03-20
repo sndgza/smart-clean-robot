@@ -29,7 +29,7 @@
 #include "bsp_speedtest.h"
 #include <stdio.h>
 #include <string.h> 
-
+#include "bsp_Bluetooth.h"
 #include "bsp_oled.h"
 
 extern volatile uint16_t CNT;
@@ -206,7 +206,25 @@ void TIM2_IRQHandler()
 
 }
 
-
+void DEBUG_USART3_IRQHandler()
+{
+  uint8_t ucCh;
+  if( USART_GetITStatus ( DEBUG_USART3, USART_IT_RXNE ) != RESET )
+  {
+    ucCh  = USART_ReceiveData( DEBUG_USART3 );
+    if( Usart3_RxCounter < (USART_RXBUFF_SIZE-1) )
+    {
+      Usart3_RxBuff[Usart3_RxCounter++] = ucCh;
+    }
+  }
+  	if ( USART_GetITStatus( DEBUG_USART3, USART_IT_IDLE ) == SET )                                         //数据帧接收完毕
+	{
+    Usart3_RxCompleted = 1;
+		
+		ucCh = USART_ReceiveData( DEBUG_USART3 );                                                              //由软件序列清除中断标志位(先读USART_SR，然后读USART_DR)	
+		
+  }	
+}
 
 
 

@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    bsp_oled.c
   * @author  fire
-  * @version V1.0
+  * @version V1.1
   * @date    2022-03-18
   * @brief   oled spi驱动函数
   ******************************************************************************
@@ -247,7 +247,26 @@ void OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned 
 	    }
 	}
 } 
+/**
+  * @brief 	清除某一行
+	* @param None
+	* @retval None
+  */
+void OLED_ClearRow(uint8_t y)
+{
+	unsigned char i;			
+	// OLED_Set_Pos(0,y);
+	// for(i = 0; i < 128;i++)
+	// {
+	// 	OLED_WR_Byte(0,OLED_DATA);
+	// }
+	OLED_Set_Pos(0,y+1);
+	for(i = 0; i < 128;i++)
+	{
+		OLED_WR_Byte(0,OLED_DATA);
+	}	
 
+}
 /**
   * @brief 初始化SSD1306
 	* @param None

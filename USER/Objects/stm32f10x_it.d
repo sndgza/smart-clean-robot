@@ -33,5 +33,7 @@
 .\objects\stm32f10x_it.o: .\inc\bsp_speedtest.h
 .\objects\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\stm32f10x_it.o: .\inc\bsp_Bluetooth.h
+.\objects\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\objects\stm32f10x_it.o: .\inc\bsp_oled.h
 .\objects\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
