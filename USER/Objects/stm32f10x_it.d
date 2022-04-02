@@ -37,3 +37,4 @@
 .\objects\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\objects\stm32f10x_it.o: .\inc\bsp_oled.h
 .\objects\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\stm32f10x_it.o: .\inc\bsp_hcsr.h

@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    bsp_led.c
   * @author  sndgza
-  * @version V1.0
+  * @version V1.3
   * @date    2022-03-17
   * @brief   电机驱动函数接口
   ******************************************************************************
@@ -32,9 +32,10 @@ void motor1_init(u16 arr,u16 psc)
   TIM_OCInitTypeDef  TIM_OCInitStructure;
 
   motorLeft = MOTOR1_PULSE;
+  motorRight = MOTOR2_PULSE;
   // 输出比较通道1 GPIO 初始化
   RCC_APB2PeriphClockCmd(MOTOR1_PORT1_CLK , ENABLE);
-  GPIO_InitStructure.GPIO_Pin =  MOTOR1_PIN1;
+  GPIO_InitStructure.GPIO_Pin =  MOTOR1_PIN1 | MOTOR2_PIN1;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(MOTOR1_PORT1, &GPIO_InitStructure);
@@ -68,11 +69,25 @@ void motor1_init(u16 arr,u16 psc)
 	TIM_OCInitStructure.TIM_Pulse = motorLeft;
 	TIM_OC1Init(MOTOR1_TIM, &TIM_OCInitStructure);
 	TIM_OC1PreloadConfig(MOTOR1_TIM, TIM_OCPreload_Enable);
-    //TIM_ARRPreloadConfig(TIM3,ENABLE);
-    TIM_Cmd(MOTOR1_TIM, ENABLE);
+
+  TIM_OCInitStructure.TIM_Pulse = motorRight;
+  TIM_OC2Init(MOTOR2_TIM, &TIM_OCInitStructure);
+	TIM_OC2PreloadConfig(MOTOR2_TIM, TIM_OCPreload_Enable);
+  //TIM_ARRPreloadConfig(TIM3,ENABLE);
+  TIM_Cmd(MOTOR1_TIM, ENABLE);
  
 }
 
+
+void motor_gpio_config()
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE,ENABLE);
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(GPIOE,&GPIO_InitStructure);
+}
 
 
 

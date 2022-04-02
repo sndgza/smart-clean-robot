@@ -31,9 +31,22 @@
 #include <string.h> 
 #include "bsp_Bluetooth.h"
 #include "bsp_oled.h"
+#include "bsp_hcsr.h"
 
+
+int Time_count;
+extern uint16_t hcsr_time;
+extern float hcsr_distance;
+extern int distance_flag;
+
+extern int PID_flag;
+
+extern volatile uint16_t CNT1;
 extern volatile uint16_t CNT;
 extern s32 leftSpeedNow;
+extern s32 rightSpeedNow;
+
+
 char    speed[5];
 //char char_buffer[5];
 
@@ -166,24 +179,47 @@ void SPEED_CLK_TIM_IRQHandler(void)
     {
         TIM_ClearITPendingBit(SPEED_CLK_TIM,TIM_IT_Update);  //清除TIMx更新中断标志 
         
-        if(CNT < 10)
+
+        if(Time_count < 10)
         {
-          sprintf(speed,"%d  \0",CNT);
-          OLED_ShowString(50,0,speed);
+          Time_count++;
+          distance_flag = 1;
+          TIM_SetCounter(TIM2,0);
         }
-        else if(CNT < 100)
+        // if(CNT < 10)
+        // {
+        //   sprintf(speed,"%d  \0",CNT);
+        //   OLED_ShowString(50,0,speed);
+        // }
+        // else if(CNT < 100)
+        // {
+        //   sprintf(speed,"%d \0",CNT);
+        //   OLED_ShowString(50,0,speed);
+        // }
+        // else 
+        // {
+        //   sprintf(speed,"%d\0",CNT);
+        //   OLED_ShowString(50,0,speed);
+        // }
+        else
         {
-          sprintf(speed,"%d \0",CNT);
-          OLED_ShowString(50,0,speed);
+
+          Time_count = 0;
+          distance_flag = 1;
+          
+          USART3_printf("\r\nleftSpeedNow = %d\r\n",CNT);
+          leftSpeedNow = CNT;
+
+          USART3_printf("\r\nrightSpeedNow = %d\r\n",CNT1);
+          rightSpeedNow = CNT1;
+          CNT = 0;
+          CNT1 = 0;
+          TIM_SetCounter(TIM2,0);
+          
+          PID_flag = 1;
+
+
         }
-        else 
-        {
-          sprintf(speed,"%d\0",CNT);
-          OLED_ShowString(50,0,speed);
-        }
-        leftSpeedNow = CNT;
-        CNT = 0;
-        TIM_SetCounter(TIM2,0);
     }
 }
 
@@ -192,16 +228,23 @@ void TIM2_IRQHandler()
 {
   // 当要被捕获的信号的周期大于定时器的最长定时时，定时器就会溢出，产生更新中断
 	// 这个时候我们需要把这个最长的定时周期加到捕获信号的时间里面去
-	if ( TIM_GetITStatus ( CAP_TIM, TIM_IT_Update) != RESET )               
+	if ( TIM_GetITStatus ( CAP1_TIM, TIM_IT_Update) != RESET )               
 	{	
 		//TIM_ICUserValueStructure.Capture_Period ++;		
-		TIM_ClearITPendingBit ( CAP_TIM, TIM_FLAG_Update ); 		
+		TIM_ClearITPendingBit ( CAP1_TIM, TIM_FLAG_Update ); 		
 	}
   // 上升沿捕获中断
-	if ( TIM_GetITStatus (CAP_TIM, CAP_TIM_IT_CCx ) != RESET)
+	if ( TIM_GetITStatus (CAP1_TIM, CAP1_TIM_IT_CCx ) != RESET)
 	{
     CNT ++;
-    TIM_ClearITPendingBit (CAP_TIM, CAP_TIM_IT_CCx );
+    TIM_ClearITPendingBit (CAP1_TIM, CAP1_TIM_IT_CCx );
+  }
+
+  // 上升沿捕获中断
+	if ( TIM_GetITStatus (CAP2_TIM, CAP2_TIM_IT_CCx ) != RESET)
+	{
+    CNT1 ++;
+    TIM_ClearITPendingBit (CAP2_TIM, CAP2_TIM_IT_CCx );
   }
 
 }
@@ -226,6 +269,23 @@ void DEBUG_USART3_IRQHandler()
   }	
 }
 
+
+void HCSR_IRQHandler()
+{
+	if(EXTI_GetITStatus(HCSR_EXTI_LINE) != RESET) 
+	{
+		// LED2 取反		
+    //清除中断标志位
+    HCsr_EXTI_Close();
+    TIM_Cmd(TIM2,DISABLE);
+    hcsr_time = TIM_GetCounter(TIM2);
+    USART3_printf("\r\ntime = %d\r\n",hcsr_time);
+    hcsr_distance = hcsr_time * 0.017;
+    USART3_printf("\r\ndistance = %.2f\r\n",hcsr_distance);
+		EXTI_ClearITPendingBit(HCSR_EXTI_LINE); 
+    
+	} 
+}
 
 
 /******************************************************************************/

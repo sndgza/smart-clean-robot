@@ -10,14 +10,24 @@
 #define             SPEED_CLK_TIM_IRQHandler        TIM6_IRQHandler
 
 
-#define             CAP_TIM                     TIM2
-#define             CAP_TIM_CLC                 RCC_APB1Periph_TIM2
-#define             CAP_TIM_IT_CCx              TIM_IT_CC3
-#define             CAP_TIM_Channelx            TIM_Channel_3
+#define             CAP1_TIM                     TIM2
+#define             CAP1_TIM_CLC                 RCC_APB1Periph_TIM2
+#define             CAP1_TIM_IT_CCx              TIM_IT_CC2
+#define             CAP1_TIM_Channelx            TIM_Channel_2
 
-#define             CAP_PORT                    GPIOA
-#define             CAP_PIN                     GPIO_Pin_2
-#define             CAP_PORT_CLC                RCC_APB2Periph_GPIOA
+#define             CAP1_PORT                    GPIOA
+#define             CAP1_PIN                     GPIO_Pin_1
+#define             CAP1_PORT_CLC                RCC_APB2Periph_GPIOA
+
+#define             CAP2_TIM                     TIM2
+#define             CAP2_TIM_CLC                 RCC_APB1Periph_TIM2
+#define             CAP2_TIM_IT_CCx              TIM_IT_CC4
+#define             CAP2_TIM_Channelx            TIM_Channel_4
+
+#define             CAP2_PORT                    GPIOA
+#define             CAP2_PIN                     GPIO_Pin_3
+#define             CAP2_PORT_CLC                RCC_APB2Periph_GPIOA
+
 
 
 

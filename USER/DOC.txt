@@ -1,0 +1,15 @@
+引脚接口
+motor1 TIM3
+PA6 PA7
+
+
+Speedtest TIM2
+
+PA1 PA3
+
+
+Bluetooth USART3
+PB10 PB11
+
+Hcsr TIM7
+

@@ -7,6 +7,9 @@
         "bsp_oled.h": "c",
         "bsp_pid.h": "c",
         "stm32f10x.h": "c",
-        "bsp_bluetooth.h": "c"
+        "bsp_bluetooth.h": "c",
+        "bsp_hcsr.h": "c",
+        "bsp_i2c.h": "c",
+        "mpu6050.h": "c"
     }
 }

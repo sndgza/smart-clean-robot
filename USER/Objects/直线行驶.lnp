@@ -33,6 +33,11 @@
 ".\objects\bsp_oled.o"
 ".\objects\bsp_pid.o"
 ".\objects\bsp_bluetooth.o"
+".\objects\bsp_hcsr.o"
+".\objects\mpu6050.o"
+".\objects\bsp_i2c.o"
+".\objects\inv_mpu.o"
+".\objects\inv_mpu_dmp_motion_driver.o"
 --strict --scatter ".\Objects\Ö±ÏßÐÐÊ».sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

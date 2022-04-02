@@ -2,7 +2,7 @@
 *******************************************************************************
 * @file    bsp_Bluetooth.c
 * @author  sndgza
-* @version V1.0
+* @version V1.1
 * @date    2022-03-20
 * @brief   蓝牙驱动
 ******************************************************************************
@@ -13,6 +13,9 @@
 
 #include "bsp_Bluetooth.h"
 
+
+
+enum System_status Car_Status;
 char Usart3_RxCompleted = 0;            						//定义一个变量 0：表示接收未完成 1：表示接收完成 
 unsigned int Usart3_RxCounter = 0;      						//定义一个变量，记录串口1总共接收了多少字节的数据
 char Usart3_RxBuff[USART_RXBUFF_SIZE]; 							//定义一个数组，用于保存串口1接收到的数据   	
@@ -65,9 +68,9 @@ static void NVIC_Configuration(void)
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
     /* 配置USART为中断源 */
     NVIC_InitStructure.NVIC_IRQChannel = DEBUG_USART3_IRQ;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
     /* 子优先级 */
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     /* 使能中断 */
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     /* 初始化配置NVIC */
@@ -126,3 +129,34 @@ void USART_Config(void)
     // 使能串口
     USART_Cmd(DEBUG_USART3, ENABLE);
 }
+
+void Bluetooth_CMD(void)
+{
+  int CMD_lenth;
+  char Bluetooch_buff[20];
+
+  CMD_lenth = 0;
+  
+
+  while ( Usart3_RxCounter-- )
+  {
+    Bluetooch_buff [CMD_lenth] = Usart3_RxBuff[CMD_lenth];
+    CMD_lenth++; 
+  }
+
+  Usart3_RxCounter = 0;
+
+  if( strstr (Bluetooch_buff,"move"))
+  {
+    Car_Status = Start_run;
+  }
+  if(strstr(Bluetooch_buff,"stop"))
+  {
+    Car_Status = Start_wait;
+  }
+
+  Usart3_RxCompleted = 0;
+  
+}
+
+

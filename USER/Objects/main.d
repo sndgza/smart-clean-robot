@@ -39,3 +39,9 @@
 .\objects\main.o: .\inc\bsp_pid.h
 .\objects\main.o: .\inc\bsp_Bluetooth.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\main.o: .\inc\bsp_hcsr.h
+.\objects\main.o: .\inc\mpu6050.h
+.\objects\main.o: .\inc\bsp_i2c.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\objects\main.o: .\DMP\inv_mpu.h
+.\objects\main.o: .\DMP\inv_mpu_dmp_motion_driver.h

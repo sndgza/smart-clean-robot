@@ -2,7 +2,7 @@
 *******************************************************************************
 * @file    bsp_pid.c
 * @author  sndgza
-* @version V1.0
+* @version V1.1
 * @date    2022-03-19
 * @brief   pid控制算法
 ******************************************************************************
@@ -34,12 +34,12 @@ void PID_Init(void)
 
 
     /***********************右轮速度pid****************************/
-    pid_Task_Right.Kp = 1024 * 0.35;//0.2
-    pid_Task_Right.Ki = 1024 * 0;   //不使用积分
-    pid_Task_Right.Kd = 1024 * 0.06; 
-    pid_Task_Right.Ur = 1024 * 4000;
+    pid_Task_Right.Kp = L_Kp;//0.2
+    pid_Task_Right.Ki = L_Ki;   //不使用积分
+    pid_Task_Right.Kd = L_Kd; 
+    pid_Task_Right.Ur = L_Ur;
     pid_Task_Right.Adjust   = 0;
-    pid_Task_Right.En       = 0;
+    pid_Task_Right.En       = 1;
     pid_Task_Right.SpeedSet = 0;
     pid_Task_Right.SpeedNow = 0;
     reset_Uk(&pid_Task_Right);
@@ -107,16 +107,16 @@ void Pid_Which(pid_uint *pl,pid_uint *pr)
         pl->En = 2; 
     }
     /***********************右轮速度pid*************************/
-    // if(pr->En == 1)
-    // {
-    //     pr->Adjust = -PID_common(pr->SpeedSet, pr->SpeedNow, pr);       
-    // }   
-    // else
-    // {
-    //     pr->Adjust = 0;
-    //     reset_Uk(pr);
-    //     pr->En = 2; 
-    // }
+    if(pr->En == 1)
+    {
+        pr->Adjust = -PID_common(pr->SpeedSet, pr->SpeedNow, pr);       
+    }   
+    else
+    {
+        pr->Adjust = 0;
+        reset_Uk(pr);
+        pr->En = 2; 
+    }
 }
 
 /*******************************************************************************
@@ -129,7 +129,11 @@ void Pid_Ctrl(int *leftMotor,int  *rightMotor)
     Pid_Which(&pid_Task_Letf, &pid_Task_Right); 
     *leftMotor  += pid_Task_Letf.Adjust;
     if(*leftMotor >= 7199) *leftMotor = 7199;
+    if(*leftMotor <= -7199) *leftMotor = -7199;
+
     *rightMotor += pid_Task_Right.Adjust;
+    if(*rightMotor >= 7199) *rightMotor = 7199;
+    if(*rightMotor <= -7199) *rightMotor = -7199;
 }
 
 

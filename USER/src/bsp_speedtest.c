@@ -2,9 +2,9 @@
   ******************************************************************************
   * @file    bsp_speedtest.c
   * @author  sndgza
-  * @version V1.0
+  * @version V1.3
   * @date    2022-03-18
-  * @brief   一路光电测速模块的驱动
+  * @brief   2路光电测速模块的驱动
   ******************************************************************************
   * @attention
   *
@@ -27,7 +27,7 @@ static void GENERAL_TIM_NVIC_Config()
 	// 设置主优先级为 0
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	 
 	// 设置抢占优先级为2
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;	
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;	
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }
@@ -43,17 +43,17 @@ static void BASIC_TIM_NVIC_Config(void)
 	// 设置主优先级为 0
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	 
 	// 设置抢占优先级为3
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;	
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;	
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }
 void speed_GPIO_Config()
 {
     GPIO_InitTypeDef    GPIO_InitStructure;
-    RCC_APB2PeriphClockCmd(CAP_PORT_CLC, ENABLE);   //使能GPIOA时钟
-    GPIO_InitStructure.GPIO_Pin  = CAP_PIN;              //PA0 清除之前设置  
+    RCC_APB2PeriphClockCmd(CAP1_PORT_CLC, ENABLE);   //使能GPIOA时钟
+    GPIO_InitStructure.GPIO_Pin  = CAP1_PIN  | CAP2_PIN;              //PA2 清除之前设置  
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;           //PA0 输入  
-    GPIO_Init(CAP_PORT, &GPIO_InitStructure);
+    GPIO_Init(CAP1_PORT, &GPIO_InitStructure);
     //GPIO_ResetBits(CAP_PORT,CAP_PIN);                       //PA0 下拉
     
 
@@ -66,16 +66,16 @@ void speed_CAPTIM_init()
 
 
     GENERAL_TIM_NVIC_Config();
-    RCC_APB1PeriphClockCmd(CAP_TIM_CLC, ENABLE);    //使能TIM2时钟
+    RCC_APB1PeriphClockCmd(CAP1_TIM_CLC, ENABLE);    //使能TIM2时钟
     //初始化定时器2 时基部分   
     TIM_TimeBaseStructure.TIM_Period = 0xFFFF;                      //设定计数器自动重装值 
     TIM_TimeBaseStructure.TIM_Prescaler =0;                         //预分频器   
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;         //设置时钟分割:TDTS = Tck_tim
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;     //TIM向上计数模式
-    TIM_TimeBaseInit(CAP_TIM, &TIM_TimeBaseStructure);                 //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
+    TIM_TimeBaseInit(CAP1_TIM, &TIM_TimeBaseStructure);                 //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
 
     // 配置输入捕获的通道，需要根据具体的GPIO来配置
-	TIM_ICInitStructure.TIM_Channel = CAP_TIM_Channelx;
+	TIM_ICInitStructure.TIM_Channel = CAP1_TIM_Channelx ;
     // 输入捕获信号的极性配置
     TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
     // 输入通道和捕获通道的映射关系，有直连和非直连两种
@@ -85,12 +85,28 @@ void speed_CAPTIM_init()
 	// 输入的需要被捕获的信号的滤波系数
 	TIM_ICInitStructure.TIM_ICFilter = 0;
 	// 定时器输入捕获初始化
-	TIM_ICInit(CAP_TIM, &TIM_ICInitStructure);
+	TIM_ICInit(CAP1_TIM, &TIM_ICInitStructure);
+
+    // 配置输入捕获的通道，需要根据具体的GPIO来配置
+	TIM_ICInitStructure.TIM_Channel = CAP2_TIM_Channelx  ;
+    // 输入捕获信号的极性配置
+    TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
+    // 输入通道和捕获通道的映射关系，有直连和非直连两种
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
+	// 输入的需要被捕获的信号的分频系数
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+	// 输入的需要被捕获的信号的滤波系数
+	TIM_ICInitStructure.TIM_ICFilter = 0;
+	// 定时器输入捕获初始化
+	TIM_ICInit(CAP2_TIM, &TIM_ICInitStructure);
+
+    
     // 清除更新和捕获中断标志位
-    TIM_ClearFlag(CAP_TIM, TIM_FLAG_Update | CAP_TIM_IT_CCx);
+    TIM_ClearFlag(CAP1_TIM, TIM_FLAG_Update | CAP1_TIM_IT_CCx | CAP2_TIM_IT_CCx);
     // 开启更新和捕获中断  
-	TIM_ITConfig (CAP_TIM, TIM_IT_Update | CAP_TIM_IT_CCx, ENABLE );
-    TIM_Cmd(CAP_TIM,ENABLE );                                          //使能定时器2
+	TIM_ITConfig (CAP2_TIM, TIM_IT_Update | CAP1_TIM_IT_CCx | CAP2_TIM_IT_CCx, ENABLE );
+    
+    TIM_Cmd(CAP1_TIM,ENABLE );                                          //使能定时器2
 } 
 
 void speed_CLKTIM_init(uint16_t arr,uint16_t prc)
