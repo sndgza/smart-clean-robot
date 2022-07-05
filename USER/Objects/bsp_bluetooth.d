@@ -30,5 +30,7 @@
 .\objects\bsp_bluetooth.o: ..\STMlib\inc\stm32f10x_wwdg.h
 .\objects\bsp_bluetooth.o: ..\STMlib\inc\misc.h
 .\objects\bsp_bluetooth.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\bsp_bluetooth.o: .\inc\Path_plan.h
+.\objects\bsp_bluetooth.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\bsp_bluetooth.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\objects\bsp_bluetooth.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

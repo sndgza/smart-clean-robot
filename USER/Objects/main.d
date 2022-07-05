@@ -38,6 +38,7 @@
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\main.o: .\inc\bsp_pid.h
 .\objects\main.o: .\inc\bsp_Bluetooth.h
+.\objects\main.o: .\inc\Path_plan.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\objects\main.o: .\inc\bsp_hcsr.h
 .\objects\main.o: .\inc\mpu6050.h

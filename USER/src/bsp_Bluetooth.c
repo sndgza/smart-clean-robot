@@ -154,9 +154,27 @@ void Bluetooth_CMD(void)
   {
     Car_Status = Start_wait;
   }
-
+  if(strstr(Bluetooch_buff,"sleep"))
+  {
+    Car_Status = Sleep_CMD;
+  }
+  if(strstr(Bluetooch_buff,"left"))
+  {
+    // turn_dirction += 3;
+    // turn_dirction %= 4;
+    Car_Status = Start_turnleft;
+  }
+  if(strstr(Bluetooch_buff,"right"))
+  {
+    // turn_dirction ++;
+    // turn_dirction %= 4;
+    Car_Status = Start_turnright;
+  }
+  if(strstr(Bluetooch_buff,"back"))
+  {
+    Car_Status = Start_turnback;
+  }
   Usart3_RxCompleted = 0;
-  
 }
 
 

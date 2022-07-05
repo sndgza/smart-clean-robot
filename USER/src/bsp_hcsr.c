@@ -51,8 +51,8 @@ void Hcsr_TIMx_Count_Config()
     TIM_TimeBaseInitStruct.TIM_CounterMode = HCSR_TIM_COUNTERMODE;
 
     TIM_TimeBaseInit(HCSR_TIM,&TIM_TimeBaseInitStruct);
-
-    RCC_APB2PeriphClockCmd(HCSR_TIM_CLK,DISABLE);
+    TIM_Cmd(TIM7,DISABLE);
+    //RCC_APB1PeriphClockCmd(HCSR_TIM_CLK,DISABLE);
 }
 
 

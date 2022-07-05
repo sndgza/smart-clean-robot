@@ -32,12 +32,13 @@
 #include "bsp_Bluetooth.h"
 #include "bsp_oled.h"
 #include "bsp_hcsr.h"
+#include "Path_plan.h"
 
-
-int Time_count;
+extern int time_count;
 extern uint16_t hcsr_time;
 extern float hcsr_distance;
 extern int distance_flag;
+extern int onestep_flag;
 
 extern int PID_flag;
 
@@ -46,6 +47,10 @@ extern volatile uint16_t CNT;
 extern s32 leftSpeedNow;
 extern s32 rightSpeedNow;
 
+
+
+int speed_left_test;
+int speed_right_test;
 
 char    speed[5];
 //char char_buffer[5];
@@ -177,50 +182,28 @@ void SPEED_CLK_TIM_IRQHandler(void)
 {
     if(TIM_GetITStatus(SPEED_CLK_TIM,TIM_IT_Update)!= RESET)      //检查TIM3更新中断发生与否
     {
-        TIM_ClearITPendingBit(SPEED_CLK_TIM,TIM_IT_Update);  //清除TIMx更新中断标志 
+        TIM_ClearITPendingBit(SPEED_CLK_TIM,TIM_IT_Update);  //清除TIMx更新中断标志 .ty.h
+        time_count++;
+        if(time_count >= 10)
+        {   
+          time_count = 0;
+          leftSpeedNow = speed_left_test;
+          rightSpeedNow = speed_right_test;
+          speed_left_test = 0;
+          speed_right_test = 0;
         
-
-        if(Time_count < 10)
-        {
-          Time_count++;
-          distance_flag = 1;
-          TIM_SetCounter(TIM2,0);
+          if(Car_Status == Start_run || Car_Status == Start_turnleft || Car_Status == Start_turnright)
+          {
+            PID_flag = 1;
+          }
+          if(Car_Status == Start_run)
+          {
+            //USART3_printf("\r\nleftSpeedNow = %d\r\n",leftSpeedNow);
+            //USART3_printf("\r\nrightSpeedNow = %d\r\n",rightSpeedNow);
+          }
         }
-        // if(CNT < 10)
-        // {
-        //   sprintf(speed,"%d  \0",CNT);
-        //   OLED_ShowString(50,0,speed);
-        // }
-        // else if(CNT < 100)
-        // {
-        //   sprintf(speed,"%d \0",CNT);
-        //   OLED_ShowString(50,0,speed);
-        // }
-        // else 
-        // {
-        //   sprintf(speed,"%d\0",CNT);
-        //   OLED_ShowString(50,0,speed);
-        // }
-        else
-        {
-
-          Time_count = 0;
-          distance_flag = 1;
-          
-          USART3_printf("\r\nleftSpeedNow = %d\r\n",CNT);
-          leftSpeedNow = CNT;
-
-          USART3_printf("\r\nrightSpeedNow = %d\r\n",CNT1);
-          rightSpeedNow = CNT1;
-          CNT = 0;
-          CNT1 = 0;
-          TIM_SetCounter(TIM2,0);
-          
-          PID_flag = 1;
-
-
-        }
-    }
+      } 
+      TIM_SetCounter(TIM2,0);
 }
 
 
@@ -236,6 +219,7 @@ void TIM2_IRQHandler()
   // 上升沿捕获中断
 	if ( TIM_GetITStatus (CAP1_TIM, CAP1_TIM_IT_CCx ) != RESET)
 	{
+    speed_left_test++;
     CNT ++;
     TIM_ClearITPendingBit (CAP1_TIM, CAP1_TIM_IT_CCx );
   }
@@ -243,10 +227,16 @@ void TIM2_IRQHandler()
   // 上升沿捕获中断
 	if ( TIM_GetITStatus (CAP2_TIM, CAP2_TIM_IT_CCx ) != RESET)
 	{
-    CNT1 ++;
+    speed_right_test++;
+    CNT1++;
     TIM_ClearITPendingBit (CAP2_TIM, CAP2_TIM_IT_CCx );
   }
-
+  if(CNT >= 10 && CNT1 >= 10 && Car_Status == Start_run)
+  {
+    CNT = 0;
+    CNT1 = 0;
+    onestep_flag = 1;
+  }
 }
 
 void DEBUG_USART3_IRQHandler()
@@ -274,16 +264,16 @@ void HCSR_IRQHandler()
 {
 	if(EXTI_GetITStatus(HCSR_EXTI_LINE) != RESET) 
 	{
-		// LED2 取反		
-    //清除中断标志位
+
     HCsr_EXTI_Close();
-    TIM_Cmd(TIM2,DISABLE);
-    hcsr_time = TIM_GetCounter(TIM2);
-    USART3_printf("\r\ntime = %d\r\n",hcsr_time);
+    TIM_Cmd(TIM7,DISABLE);
+    hcsr_time = TIM_GetCounter(TIM7);
+    //USART3_printf("\r\ntime = %d\r\n",hcsr_time);
     hcsr_distance = hcsr_time * 0.017;
-    USART3_printf("\r\ndistance = %.2f\r\n",hcsr_distance);
+    distance_flag = 1;
+    //USART3_printf("\r\ndistance = %.2f\r\n",hcsr_distance);
 		EXTI_ClearITPendingBit(HCSR_EXTI_LINE); 
-    
+    TIM_SetCounter(TIM7,0);
 	} 
 }
 

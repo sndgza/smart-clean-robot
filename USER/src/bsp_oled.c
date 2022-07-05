@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    bsp_oled.c
-  * @author  fire
+  * @author  sndgza
   * @version V1.1
   * @date    2022-03-18
   * @brief   oled spiÇý¶¯º¯Êý

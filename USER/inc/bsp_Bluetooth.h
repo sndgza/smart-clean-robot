@@ -2,7 +2,8 @@
 #define _BSP_BLUETOOTH_H
 
 #include "stm32f10x.h"  
-#include "stdio.h"      
+#include "stdio.h" 
+#include "Path_plan.h"     
 #include "stdarg.h"		
 #include "string.h"  
 
@@ -29,13 +30,18 @@
 enum System_status{
     Wait_CMD,
     Start_run,
-    Start_wait
+    Start_turnleft,
+    Start_turnright,
+    Start_turnback,
+    Start_wait,
+    Sleep_CMD
 } ;
 
 
 extern char Usart3_RxCompleted ;                    //外部声明，其他文件可以调用该变量
 extern unsigned int Usart3_RxCounter;               //外部声明，其他文件可以调用该变量
 extern char Usart3_RxBuff[USART_RXBUFF_SIZE];       //外部声明，其他文件可以调用该变量
+extern enum System_status Car_Status;
 
 void USART_Config(void);
 void USART3_printf(char* fmt,...);

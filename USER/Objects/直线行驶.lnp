@@ -38,6 +38,7 @@
 ".\objects\bsp_i2c.o"
 ".\objects\inv_mpu.o"
 ".\objects\inv_mpu_dmp_motion_driver.o"
+".\objects\path_plan.o"
 --strict --scatter ".\Objects\Ö±ÏßÐÐÊ».sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

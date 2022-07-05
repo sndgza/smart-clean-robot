@@ -4,8 +4,8 @@
 #include "stm32f10x.h"
 
 #define  HCSR_TIM_APBxClock_FUN             RCC_APB1PeriphClockCmd
-#define  HCSR_TIM                           TIM2
-#define  HCSR_TIM_CLK                       RCC_APB1Periph_TIM2
+#define  HCSR_TIM                           TIM7
+#define  HCSR_TIM_CLK                       RCC_APB1Periph_TIM7
 #define  HCSR_TIM_PERIOD                    0xFFFF
 #define  HCSR_TIM_PRESCALER                 71
 #define  HCSR_TIM_COUNTERMODE               TIM_CounterMode_Up

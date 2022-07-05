@@ -607,6 +607,11 @@
               <FileType>1</FileType>
               <FilePath>.\DMP\inv_mpu_dmp_motion_driver.c</FilePath>
             </File>
+            <File>
+              <FileName>Path_plan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Path_plan.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

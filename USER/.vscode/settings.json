@@ -10,6 +10,7 @@
         "bsp_bluetooth.h": "c",
         "bsp_hcsr.h": "c",
         "bsp_i2c.h": "c",
-        "mpu6050.h": "c"
+        "mpu6050.h": "c",
+        "path_plan.h": "c"
     }
 }

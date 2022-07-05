@@ -9,14 +9,14 @@
 #define     MOTOR1_PORT1_CLK        RCC_APB2Periph_GPIOA 
 #define     MOTOR1_TIM_CLK          RCC_APB1Periph_TIM3
 #define     MOTOR1_TIM              TIM3
-#define     MOTOR1_PULSE            4500
+#define     MOTOR1_PULSE            5400
 
 #define     MOTOR2_PORT1            GPIOA          
 #define     MOTOR2_PIN1             GPIO_Pin_7
 #define     MOTOR2_PORT1_CLK        RCC_APB2Periph_GPIOA 
 #define     MOTOR2_TIM_CLK          RCC_APB1Periph_TIM3
 #define     MOTOR2_TIM              TIM3
-#define     MOTOR2_PULSE            4500
+#define     MOTOR2_PULSE            5400
 
 extern s32 motorLeft;
 extern s32 motorRight;   
